@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from "styled-components";
 import Avatar from '@material-ui/core/Avatar';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
+import PlayerContext from '../context/player-info';
 
 const Container = styled.div`
   margin-top: 50px;
@@ -10,14 +11,20 @@ const Container = styled.div`
 `;
 
 const Timer: React.FC = () => {
-
+  const player = useContext(PlayerContext);
+  const isRunning = player["isRunning"];
   const [currentTime, setCurrentTime] = useState(0);
 
   useEffect(() => {
     setTimeout(() => {
-      setCurrentTime(currentTime + 1);
+      if (!isRunning) {
+        setCurrentTime(0);
+      } else {
+        setCurrentTime(currentTime + 1);
+      }
     }, 1000)
-  }, [currentTime]);
+  }, [currentTime, isRunning]);
+
   
   return (
     <Container>
